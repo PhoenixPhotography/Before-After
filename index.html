@@ -47,12 +47,6 @@ main {
   --position: 50%;
 }
 
-.image-container {
-  max-width: 800px;
-  max-height: 90vh;
-  aspect-ratio: 1/1;
-}
-
 .slider-image {
   width: 100%;
   height: 100%;
@@ -64,7 +58,6 @@ main {
   position: absolute;
   inset: 0;
   width: var(--position);
-  filter: grayscale(100%)
 }
 
 .slider {
@@ -115,12 +108,14 @@ main {
   <main>
     <div class="container">
       <div class="image-container">
-        <img src="./images/retouching1_before.jpg" 
-          class="image-before"
+        <img 
+          class="image-before slider-image"
+          src="./images/retouching1_before.jpg"
           alt="Before image"
           />
-        <img src="./images/retouching1_after.jpg" 
-          class="image-after"
+        <img  
+          class="image-after slider-image"
+          src="./images/retouching1_after.jpg"
           alt="After image"
           />
       </div>
@@ -136,4 +131,12 @@ main {
     </div>
   </main>
 </body>
+<footer>
+  <script>
+    const container = document.querySelector('.container');
+document.querySelector('.slider').addEventListener('input', (e) => {
+  container.style.setProperty('--position', `${e.target.value}%`);
+})
+  </script>
+</footer>
 </html>
