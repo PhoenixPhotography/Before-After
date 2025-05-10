@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Before/After Slider</title>
-    <link rel="stylesheet" href="style.css">
     <style>
       *,
       *::after,
@@ -180,6 +179,7 @@
   <script>
     const container = document.querySelector('.container');
     document.querySelector('.slider').addEventListener('input', (e) => {
+      // Make sure the --position value is updated correctly
       container.style.setProperty('--position', `${e.target.value}%`);
     })
   </script>
