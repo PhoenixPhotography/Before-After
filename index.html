@@ -6,143 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Before/After Slider</title>
     <style>
-      *,
-      *::after,
-      *::before {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+.container {
+  display: grid;
+  place-content: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 16/9;
+  background-color: #000; /* Ensures visibility of the container */
+}
 
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        justify-content: space-between;
-      }
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
 
-      main {
-        flex: 1;
-        display: grid;
-        place-items: center;
-        padding: 2rem;
-      }
+.slider-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 
-      .container {
-        display: grid;
-        place-content: center;
-        position: relative;
-        overflow: hidden;
-        border-radius: 1rem;
-        width: 100%;
-        max-width: 800px;
-        aspect-ratio: 16/9;
-        background-color: #000;
-        box-sizing: border-box;
-      }
+.image-before {
+  position: absolute;
+  inset: 0;
+  width: var(--position);
+  transition: width 0.2s ease;
+  z-index: 2;
+}
 
-      .image-container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-      }
+.image-after {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  z-index: 1;
+}
 
-      .slider-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-      }
-
-      .image-before {
-        position: absolute;
-        inset: 0;
-        width: var(--position);
-        transition: width 0.2s ease;
-        z-index: 2;
-      }
-
-      .image-after {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        z-index: 1;
-      }
-
-      .slider {
-        position: absolute;
-        top: 0;
-        left: 50%; /* Center the slider horizontally */
-        transform: translateX(-50%); /* Adjust for the width of the slider */
-        cursor: pointer;
-        opacity: 0;
-        width: 100%;
-        height: 100%;
-      }
-
-      .slider-line {
-        position: absolute;
-        inset: 0;
-        width: 0.2rem;
-        height: 100%;
-        background-color: #fff;
-        left: 50%; /* Start the slider line in the center */
-        transform: translateX(-50%);
-        pointer-events: none;
-      }
-
-      .slider-button {
-        position: absolute;
-        background-color: #fff;
-        color: black;
-        padding: 0.5rem;
-        border-radius: 100vw;
-        display: grid;
-        place-items: center;
-        top: 50%;
-        left: 50%; /* Start the slider button in the center */
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-      }
-
-      header {
-        text-align: center;
-        margin-bottom: 2rem;
-      }
-
-      footer {
-        text-align: center;
-        padding: 1rem;
-        background-color: #222;
-        color: white;
-      }
-
-      footer a {
-        color: white;
-        text-decoration: none;
-      }
-
-      /* Media Queries for Responsiveness */
-      @media (max-width: 1024px) {
-        .container {
-          aspect-ratio: 16/9; /* Adjust for tablets */
-        }
-      }
-
-      @media (max-width: 768px) {
-        .container {
-          aspect-ratio: 16/9;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .container {
-          aspect-ratio: 4/3; /* Adjust for small screens like smartphones */
-        }
-      }
     </style>
 </head>
 <body>
@@ -182,11 +85,42 @@
   </footer>
 
   <script>
-    const container = document.querySelector('.container');
-    document.querySelector('.slider').addEventListener('input', (e) => {
-      // Ensure the width of the "before" image is updated based on the slider position
-      container.style.setProperty('--position', `${e.target.value}%`);
-    })
+const container = document.querySelector('.container');
+const slider = document.querySelector('.slider');
+const sliderLine = document.querySelector('.slider-line');
+const sliderButton = document.querySelector('.slider-button');
+
+slider.addEventListener('input', (e) => {
+  const value = e.target.value;
+
+  // Set the width of the before image and the slider line/button position
+  container.style.setProperty('--position', `${value}%`);
+  sliderLine.style.left = `${value}%`;
+  sliderButton.style.left = `${value}%`;
+});
+
+slider.addEventListener('mousedown', (e) => {
+  // Start the dragging functionality
+  e.preventDefault(); // Prevent text selection while dragging
+  const sliderWidth = slider.offsetWidth;
+
+  const moveSlider = (moveEvent) => {
+    let newValue = ((moveEvent.clientX - slider.getBoundingClientRect().left) / sliderWidth) * 100;
+    newValue = Math.min(100, Math.max(0, newValue)); // Ensure the value stays between 0 and 100
+    slider.value = newValue;
+    container.style.setProperty('--position', `${newValue}%`);
+    sliderLine.style.left = `${newValue}%`;
+    sliderButton.style.left = `${newValue}%`;
+  };
+
+  const stopDrag = () => {
+    document.removeEventListener('mousemove', moveSlider);
+    document.removeEventListener('mouseup', stopDrag);
+  };
+
+  document.addEventListener('mousemove', moveSlider);
+  document.addEventListener('mouseup', stopDrag);
+});
   </script>
 </body>
 </html>
