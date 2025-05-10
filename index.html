@@ -135,7 +135,7 @@
 
 <script>
 // get the div containing both the before and after images
-const imageWrapper = document.querySelector(.before-after-wrapper);
+const imageWrapper = document.querySelector(`.before-after-wrapper`);
 // check if the user is using a touch device
 const isTouch = window.matchMedia('(pointer: coarse)').matches;
 
@@ -153,7 +153,6 @@ function getCoords(e) {
     x = e.touches[0].clientX;
     y = e.touches[0].clientY;
   } else {
-    // 
     // desktop: if the device is not a touch device we can get it right from the event (e) object
     x = e.clientX;
     y = e.clientY;
@@ -210,9 +209,12 @@ function dragElement(el) {
     let wrapperRight = el.offsetLeft - pos1;
 
     if (wrapperRight >= 0 && wrapperRight <= imageWrapper.offsetWidth) {
-      // set the element's new position:
-      el.style.left = ${el.offsetLeft - pos1}px;
-      imageWrapper.querySelector('.before-image-wrapper').style.width = ${wrapperRight}px;
+      // Update the width of the before-image-wrapper
+      el.style.left = `${el.offsetLeft - pos1}px`;
+      imageWrapper.querySelector('.before-image-wrapper').style.width = `${wrapperRight}px`;
+
+      // Update the width of the after-image (from the right side)
+      imageWrapper.querySelector('.after-image').style.width = `${imageWrapper.offsetWidth - wrapperRight}px`;
     }
   }
 
