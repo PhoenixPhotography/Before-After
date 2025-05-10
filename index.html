@@ -60,17 +60,21 @@
         inset: 0;
         width: var(--position);
         transition: width 0.2s ease;
+        z-index: 2;
       }
 
       .image-after {
         position: absolute;
         inset: 0;
         width: 100%;
+        z-index: 1;
       }
 
       .slider {
         position: absolute;
-        inset: 0;
+        top: 0;
+        left: 50%; /* Center the slider horizontally */
+        transform: translateX(-50%); /* Adjust for the width of the slider */
         cursor: pointer;
         opacity: 0;
         width: 100%;
@@ -83,7 +87,7 @@
         width: 0.2rem;
         height: 100%;
         background-color: #fff;
-        left: var(--position);
+        left: 50%; /* Start the slider line in the center */
         transform: translateX(-50%);
         pointer-events: none;
       }
@@ -97,7 +101,7 @@
         display: grid;
         place-items: center;
         top: 50%;
-        left: var(--position);
+        left: 50%; /* Start the slider button in the center */
         transform: translate(-50%, -50%);
         pointer-events: none;
         box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
@@ -179,7 +183,7 @@
   <script>
     const container = document.querySelector('.container');
     document.querySelector('.slider').addEventListener('input', (e) => {
-      // Make sure the --position value is updated correctly
+      // Ensure the width of the "before" image is updated based on the slider position
       container.style.setProperty('--position', `${e.target.value}%`);
     })
   </script>
