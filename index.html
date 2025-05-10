@@ -2,248 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retouching Portfolio</title>
+    <meta http-equiv="X-UA-Compatible"
+    content="IE=edge">
+    <meta name="viewport" 
+    content="width=device-width, initial-scale=1.0">
+    <title>Before/After Slider</title>
     <style>
-/* General Reset and Styling */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-}
-
-/* Container for Before-After Images */
-.before-after-wrapper {
-  outline: 4px solid green;
-  position: relative;
-  aspect-ratio: 3/2; /* Ensures aspect ratio remains the same */
-  width: 100%; /* Make it responsive */
-  max-width: 100%; /* Ensure it doesn't exceed container width */
-}
-
-/* Before and After Image Styles */
-.before-image, .after-image {
-  background-size: contain; /* Prevent zooming, images will be contained */
-  background-position: center; /* Keep images centered */
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-/* Wrappers to hold before and after images */
-.before-image-wrapper {
-  bottom: 0;
-  left: 0;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  z-index: 10;
-}
-
-.after-image {
-  z-index: 5;
-}
-
-/* Handle for the slider */
-.handle {
-  align-items: center;
-  background: green;
-  bottom: 0;
-  cursor: col-resize;
-  display: flex;
-  justify-content: center;
-  left: 50%;
-  position: absolute;
-  top: 0;
-  width: 4px;
-  z-index: 20;
-}
-
-.handle::before {
-  content: '';
-  position: absolute;
-  inset: 0 -20px;
-}
-
-.handle::after {
-  align-items: center;
-  background: darkgreen;
-  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 512 512"><path fill="hsl(172, 61%, 82%)" d="M505.7 265.7c3-3 3.1-7.9 .2-11.1l-104-112c-3-3.2-8.1-3.4-11.3-.4s-3.4 8.1-.4 11.3L481.7 252 23.3 252l90.3-90.3c3.1-3.1 3.1-8.2 0-11.3s-8.2-3.1-11.3 0l-104 104c-3.1 3.1-3.1 8.2 0 11.3l104 104c3.1 3.1 8.2 3.1 11.3 0s3.1-8.2 0-11.3L23.3 268l457.4 0-90.3 90.3c-3.1 3.1-3.1 8.2 0 11.3s8.2 3.1 11.3 0l104-104z"/></svg>');
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 50%;
-  color: green;
-  content: '';
-  display: flex;
-  font-size: 16px;
-  font-weight: bold;
-  justify-content: center;
-  max-height: 40px;
-  max-width: 40px;
-  min-height: 40px;
-  min-width: 40px;
-}
-
-/* Media Queries for Responsive Design */
-@media (max-width: 1024px) {
-  .before-after-wrapper {
-    aspect-ratio: 16/9; /* Adjust for tablets or smaller devices */
-  }
-
-  .handle {
-    width: 3px; /* Make handle smaller for tablets */
-  }
-}
-
-@media (max-width: 768px) {
-  .before-after-wrapper {
-    aspect-ratio: 16/9;
-  }
-
-  /* Adjust handle width */
-  .handle {
-    width: 2px;
-  }
-}
-
-@media (max-width: 480px) {
-  .before-after-wrapper {
-    aspect-ratio: 4/3; /* Adjust for small screens like smartphones */
-  }
-
-  .handle {
-    width: 2px; /* Adjust for smaller touch areas */
-  }
-
-  /* Add padding to body for smaller devices */
-  body {
-    padding: 10px;
-  }
-}
-    </style>
 </head>
 <body>
-
-<header>
-    <h1>Retouching Portfolio</h1>
-</header>
-
-<!-- before and after html with tailwind css classes -->
-
-<section data-slice-type="before_and_after" data-slice-variation="default" class="overflow-hidden before-after-wrapper rounded-3xl svelte-18shrgw">
-    <div class="before-image-wrapper svelte-18shrgw" style="width: 483px;">
-        <div class="before-image svelte-18shrgw" style="background-image: url('images/retouching1_before.jpg');" alt="Before Image 1">      
-        </div></div> <div class="after-image svelte-18shrgw" style="background-image: url('images/retouching1_after.jpg');" alt="After Image 1"></div> 
-    <span class="handle draggable svelte-18shrgw" style="left: 483px;"></span>
-</section>
-  
-<footer>
-    <p>Contact me at <a href="mailto:phoenixfusion2025@gmail.com" style="color: white;">phoenixfusion2025@gmail.com</a></p>
-</footer>
-
-<script>
-// get the div containing both the before and after images
-const imageWrapper = document.querySelector(`.before-after-wrapper`);
-// check if the user is using a touch device
-const isTouch = window.matchMedia('(pointer: coarse)').matches;
-
-// initialize the dragElement function below
-dragElement(imageWrapper.querySelector('.handle'));
-
-// get the current coordinates of the .handle
-function getCoords(e) {
-  let x, y;
-
-  // get the current x and y of the users input (dragging .handle)
-  // check if the device is a touch device
-  if (isTouch) {
-    // touchscreen: if the devices is a touch device, the x and y will be in the touches[0] object
-    x = e.touches[0].clientX;
-    y = e.touches[0].clientY;
-  } else {
-    // desktop: if the device is not a touch device we can get it right from the event (e) object
-    x = e.clientX;
-    y = e.clientY;
-  }
-
-  return { x, y };
-}
-
-// listens for the user touch/mouse input on the .handle element and drags the slider
-function dragElement(el) {
-  let pos1 = 0,
-      pos2 = 0,
-      pos3 = 0,
-      pos4 = 0;
-
-  // initialize the slider being dragged when the .handle is pressed
-  if (isTouch) {
-    el.ontouchstart = dragInit;
-  } else {
-    el.onmousedown = dragInit;
-  }
-
-  // call elementDrag/closeElementDrag when the users interacts with .handle
-  function dragInit(e) {
-    e = e || window.event;
-    e.preventDefault();
-
-    // get the mouse cursor/touch position at startup
-    const { x, y } = getCoords(e);
-    pos3 = x;
-    pos4 = y;
-
-    if (isTouch) {
-      document.ontouchend = closeElementDrag; // stop moving
-      document.ontouchmove = elementDrag; // call function whenever the cursor moves
-    } else {
-      document.onmouseup = closeElementDrag; // stop moving
-      document.onmousemove = elementDrag; // call function whenever the cursor moves
-    }
-  }
-
-  // as the element is dragged update the .before-image-wrapper width
-  function elementDrag(e) {
-    e = e || window.event;
-    e.preventDefault();
-
-    // calculate new cursor position:
-    const { x, y } = getCoords(e);
-    pos1 = pos3 - x;
-    pos2 = pos4 - y;
-    pos3 = x;
-    pos4 = y;
-
-    let wrapperRight = el.offsetLeft - pos1;
-
-    if (wrapperRight >= 0 && wrapperRight <= imageWrapper.offsetWidth) {
-      // Update the width of the before-image-wrapper
-      el.style.left = `${el.offsetLeft - pos1}px`;
-      imageWrapper.querySelector('.before-image-wrapper').style.width = `${wrapperRight}px`;
-
-      // Update the width of the after-image (from the right side)
-      imageWrapper.querySelector('.after-image').style.width = `${imageWrapper.offsetWidth - wrapperRight}px`;
-    }
-  }
-
-  function closeElementDrag() {
-    if (isTouch) {
-      document.ontouchend = null;
-      document.ontouchmove = null;
-    } else {
-      document.onmouseup = null;
-      document.onmousemove = null;
-    }
-  }
-}
-</script>
-
+  <main>
+    <div class="container">
+      <div class="image-container">
+        <img src="./images/retouching1_before.jpg" 
+          class="image-before"
+          alt="Before image"
+          />
+        <img src="./images/retouching1_after.jpg" 
+          class="image-after"
+          alt="After image"
+          />
+      </div>
+      <input type="range" min="0" max="100"
+      value="50" class="slider" aria-label="percentage of before photo shown"
+      />
+      <div class="slider-line"></div>
+      <div class="slider-button"
+      aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M136,40V216a8,8,0,0,1-16,0V40a8,8,0,0,1,16,0ZM96,120H35.31l18.35-18.34A8,8,0,0,0,42.34,90.34l-32,32a8,8,0,0,0,0,11.32l32,32a8,8,0,0,0,11.32-11.32L35.31,136H96a8,8,0,0,0,0-16Zm149.66,2.34-32-32a8,8,0,0,0-11.32,11.32L220.69,120H160a8,8,0,0,0,0,16h60.69l-18.35,18.34a8,8,0,0,0,11.32,11.32l32-32A8,8,0,0,0,245.66,122.34Z"></path></svg>
+      </div>
+    </div>
+    </div>
+  </main>
 </body>
 </html>
