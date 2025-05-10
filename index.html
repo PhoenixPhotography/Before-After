@@ -5,48 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Retouching Portfolio</title>
     <style>
+/* General Reset and Styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+/* Container for Before-After Images */
 .before-after-wrapper {
   outline: 4px solid green;
   position: relative;
-  aspect-ratio: 3/2;
+  aspect-ratio: 3/2; /* Ensures aspect ratio remains the same */
+  width: 100%; /* Make it responsive */
+  max-width: 100%; /* Ensure it doesn't exceed container width */
 }
 
-.before-after-wrapper::before {
-  background-color: hsla(172, 61%, 82%, 75%);
-  border-radius: 40px;
-  top: 10px;
-  color: green;
-  content: 'before';
-  left: 10px;
-  opacity: 0;
-  padding: 5px 10px;
+/* Before and After Image Styles */
+.before-image, .after-image {
+  background-size: contain; /* Prevent zooming, images will be contained */
+  background-position: center; /* Keep images centered */
+  height: 100%;
+  width: 100%;
   position: absolute;
-  transition: opacity 200ms ease-in-out;
-  z-index: 15;
+  top: 0;
+  left: 0;
 }
 
-:global(.before-after-wrapper.show-before::before) {
-  opacity: 1;
-}
-
-.before-after-wrapper::after {
-  background-color: hsla(172, 61%, 82%, 75%);
-  border-radius: 40px;
-  top: 10px;
-  color: green;
-  opacity: 0;
-  padding: 5px 10px;
-  position: absolute;
-  right: 10px;
-  transition: opacity 200ms ease-in-out;
-  z-index: 15;
-  content: 'after';
-}
-
-:global(.before-after-wrapper.show-after::after) {
-  opacity: 1;
-}
-
+/* Wrappers to hold before and after images */
 .before-image-wrapper {
   bottom: 0;
   left: 0;
@@ -56,18 +47,11 @@
   z-index: 10;
 }
 
-.before-image {
-  background-size: cover;
-  height: 100%;
-  width: 100%;
-}
-
 .after-image {
-  background-size: cover;
-  inset: 0;
-  position: absolute;
+  z-index: 5;
 }
 
+/* Handle for the slider */
 .handle {
   align-items: center;
   background: green;
@@ -105,6 +89,43 @@
   max-width: 40px;
   min-height: 40px;
   min-width: 40px;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 1024px) {
+  .before-after-wrapper {
+    aspect-ratio: 16/9; /* Adjust for tablets or smaller devices */
+  }
+
+  .handle {
+    width: 3px; /* Make handle smaller for tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  .before-after-wrapper {
+    aspect-ratio: 16/9;
+  }
+
+  /* Adjust handle width */
+  .handle {
+    width: 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .before-after-wrapper {
+    aspect-ratio: 4/3; /* Adjust for small screens like smartphones */
+  }
+
+  .handle {
+    width: 2px; /* Adjust for smaller touch areas */
+  }
+
+  /* Add padding to body for smaller devices */
+  body {
+    padding: 10px;
+  }
 }
     </style>
 </head>
