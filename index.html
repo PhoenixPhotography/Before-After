@@ -49,11 +49,12 @@
     }
     .image-after { z-index:1 }
     .image-before {
-      /* clip off right 50% at start */
-      clip-path: inset(0 50% 0 0);
-      transition: clip-path 0.2s ease;
-      z-index:2;
-    }
+  /* clip off right 50% at start */
+  clip-path: inset(0 50% 0 0);
+  /* ▶ remove this: transition: clip-path 0.2s ease; */
+  z-index: 2;
+}
+
 
     /* invisible full-cover range input */
     .slider {
