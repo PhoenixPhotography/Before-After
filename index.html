@@ -6,125 +6,110 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Before/After Slider</title>
   <style>
-    /* Reset & base */
-    *, *::before, *::after {
-      margin: 0; padding: 0; box-sizing: border-box;
-    }
+    /* reset */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box }
+
     body {
       font-family: Arial, sans-serif;
       background: #f4f4f4;
-      display: flex; flex-direction: column; min-height: 100vh;
+      display: flex; flex-direction: column; min-height:100vh;
     }
     header, footer {
-      text-align: center; padding: 1rem; background: #222; color: #fff;
+      text-align:center; padding:1rem; background:#222; color:#fff;
     }
     main {
-      flex: 1; display: grid; place-items: center; padding: 2rem;
+      flex:1; display:grid; place-items:center; padding:2rem;
     }
 
-    /* Container & images */
+    /* container */
     .container {
       position: relative;
       overflow: hidden;
-      border-radius: 1rem;
-      width: 100%;
-      max-width: 800px;
-      aspect-ratio: 2/3;
-      height: 600px;
-      background: #000;
+      border-radius:1rem;
+      width:100%; max-width:800px;
+      aspect-ratio:2/3;
+      height:600px;
+      background:#000;
     }
-    .image-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-    .slider-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-    .image-after {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-    }
+
+    /* both images fill the container 1:1 */
+    .image-after,
     .image-before {
-      position: absolute;
-      inset: 0;
-      width: 50%;                  /* start mid-split */
-      transition: width 0.2s ease;
-      z-index: 2;
+      position:absolute;
+      top:0; left:0; right:0; bottom:0;
+      width:100%; height:100%;
+      object-fit:cover;
     }
 
-    /* Hidden native range */
+    /* mask off the right side of the before image */
+    .image-before {
+      /* start at 50% reveal */
+      clip-path: inset(0 50% 0 0);
+      transition: clip-path 0.2s ease;
+      z-index:2;
+    }
+
+    /* full after image sits beneath */
+    .image-after { z-index:1 }
+
+    /* hide the native range track & thumb */
     .slider {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      margin: 0; background: transparent;
+      position:absolute;
+      top:0; left:0;
+      width:100%; height:100%;
+      background:transparent;
       cursor: ew-resize;
-      z-index: 4;
-      -webkit-appearance: none;
-      appearance: none;
+      z-index:4;
+      -webkit-appearance:none;
+      appearance:none;
     }
-    .slider::-webkit-slider-runnable-track {
-      width: 100%; height: 100%; background: transparent;
-    }
-    .slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 0; height: 0;
-    }
-    .slider::-moz-range-track {
-      width: 100%; height: 100%; background: transparent;
-    }
-    .slider::-moz-range-thumb {
-      width: 0; height: 0; border: none;
+    .slider::-webkit-slider-runnable-track { background:transparent; height:100% }
+    .slider::-webkit-slider-thumb      { -webkit-appearance:none; width:0; height:0 }
+    .slider::-moz-range-track          { background:transparent; height:100% }
+    .slider::-moz-range-thumb          { border:none; width:0; height:0 }
+
+    /* the white dividing line */
+    .slider-line {
+      position:absolute;
+      top:0; bottom:0;
+      width:0.2rem;
+      background:#fff;
+      left:50%; transform:translateX(-50%);
+      pointer-events:none;
+      z-index:3;
     }
 
-    /* Custom line & handle */
-    .slider-line {
-      position: absolute;
-      top: 0; height: 100%;
-      width: 0.2rem;
-      background: #fff;
-      left: 50%; transform: translateX(-50%);
-      pointer-events: none;
-      z-index: 3;
-    }
+    /* drag handle */
     .slider-button {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fff;
-      padding: 0.5rem;
-      border-radius: 50%;
-      display: grid; place-items: center;
-      pointer-events: none;
-      box-shadow: 1px 1px 4px rgba(0,0,0,0.5);
-      z-index: 3;
+      position:absolute;
+      top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      background:#fff;
+      padding:0.5rem;
+      border-radius:50%;
+      display:grid; place-items:center;
+      pointer-events:none;
+      box-shadow:1px 1px 4px rgba(0,0,0,0.5);
+      z-index:3;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Retouching Portfolio</h1>
-  </header>
+
+  <header><h1>Retouching Portfolio</h1></header>
 
   <main>
     <div class="container">
-      <div class="image-container">
-        <img
-          class="slider-image image-after"
-          src="https://phoenixphotography.github.io/Before-After/images/retouching1_after.jpg"
-          alt="After"
-        />
-        <img
-          class="slider-image image-before"
-          src="https://phoenixphotography.github.io/Before-After/images/retouching1_before.jpg"
-          alt="Before"
-        />
-      </div>
+      <img
+        class="image-after"
+        src="https://phoenixphotography.github.io/Before-After/images/retouching1_after.jpg"
+        alt="After"
+      />
+      <img
+        class="image-before"
+        src="https://phoenixphotography.github.io/Before-After/images/retouching1_before.jpg"
+        alt="Before"
+      />
 
       <input
         type="range" min="0" max="100" value="50"
@@ -143,27 +128,26 @@
   <footer>
     <p>
       Contact me at
-      <a href="mailto:phoenixfusion2025@gmail.com" style="color:#fff;">
-        phoenixfusion2025@gmail.com
-      </a>
+      <a href="mailto:phoenixfusion2025@gmail.com" style="color:#fff;">phoenixfusion2025@gmail.com</a>
     </p>
   </footer>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const range = document.querySelector('.slider');
+      const range  = document.querySelector('.slider');
       const before = document.querySelector('.image-before');
       const line   = document.querySelector('.slider-line');
       const handle = document.querySelector('.slider-button');
 
       function update(pos) {
-        before.style.width = pos + '%';
-        line.style.left    = pos + '%';
-        handle.style.left  = pos + '%';
+        // clip off the right side
+        before.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
+        line.style.left       = `${pos}%`;
+        handle.style.left     = `${pos}%`;
       }
 
       range.addEventListener('input', e => update(e.target.value));
-      update(range.value); // initialize
+      update(range.value); // initialize on load
     });
   </script>
 </body>
