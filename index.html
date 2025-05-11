@@ -21,7 +21,7 @@
       flex:1; display:grid; place-items:center; padding:2rem;
     }
 
-    /* container */
+    /* slider container */
     .container {
       position: relative;
       overflow: hidden;
@@ -32,7 +32,7 @@
       background:#000;
     }
 
-    /* both images fill the container 1:1 */
+    /* two static images */
     .image-after,
     .image-before {
       position:absolute;
@@ -40,19 +40,15 @@
       width:100%; height:100%;
       object-fit:cover;
     }
-
-    /* mask off the right side of the before image */
+    .image-after { z-index:1 }
     .image-before {
-      /* start at 50% reveal */
+      /* clip off right half at start */
       clip-path: inset(0 50% 0 0);
       transition: clip-path 0.2s ease;
       z-index:2;
     }
 
-    /* full after image sits beneath */
-    .image-after { z-index:1 }
-
-    /* hide the native range track & thumb */
+    /* full-cover, invisible range input */
     .slider {
       position:absolute;
       top:0; left:0;
@@ -60,15 +56,32 @@
       background:transparent;
       cursor: ew-resize;
       z-index:4;
+      touch-action: none;
       -webkit-appearance:none;
       appearance:none;
     }
-    .slider::-webkit-slider-runnable-track { background:transparent; height:100% }
-    .slider::-webkit-slider-thumb      { -webkit-appearance:none; width:0; height:0 }
-    .slider::-moz-range-track          { background:transparent; height:100% }
-    .slider::-moz-range-thumb          { border:none; width:0; height:0 }
+    /* track must be full height too */
+    .slider::-webkit-slider-runnable-track {
+      width:100%; height:100%; background:transparent;
+    }
+    .slider::-moz-range-track {
+      width:100%; height:100%; background:transparent;
+    }
+    /* give the thumb some area to grab */
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance:none;
+      width: 40px;        /* wide enough to touch */
+      height: 100%;       /* full height */
+      background: transparent;
+    }
+    .slider::-moz-range-thumb {
+      width: 40px;
+      height: 100%;
+      background: transparent;
+      border: none;
+    }
 
-    /* the white dividing line */
+    /* dividing line & custom handle */
     .slider-line {
       position:absolute;
       top:0; bottom:0;
@@ -78,8 +91,6 @@
       pointer-events:none;
       z-index:3;
     }
-
-    /* drag handle */
     .slider-button {
       position:absolute;
       top:50%; left:50%;
@@ -128,7 +139,9 @@
   <footer>
     <p>
       Contact me at
-      <a href="mailto:phoenixfusion2025@gmail.com" style="color:#fff;">phoenixfusion2025@gmail.com</a>
+      <a href="mailto:phoenixfusion2025@gmail.com" style="color:#fff;">
+        phoenixfusion2025@gmail.com
+      </a>
     </p>
   </footer>
 
@@ -140,14 +153,13 @@
       const handle = document.querySelector('.slider-button');
 
       function update(pos) {
-        // clip off the right side
         before.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
         line.style.left       = `${pos}%`;
         handle.style.left     = `${pos}%`;
       }
 
       range.addEventListener('input', e => update(e.target.value));
-      update(range.value); // initialize on load
+      update(range.value);
     });
   </script>
 </body>
