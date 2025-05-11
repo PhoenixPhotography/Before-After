@@ -1,127 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Before/After Slider</title>
-    <style>
-      *,
-      *::after,
-      *::before {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Before/After Slider</title>
+  <style>
+    *,
+    *::after,
+    *::before {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        justify-content: space-between;
-      }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: space-between;
+    }
 
-      main {
-        flex: 1;
-        display: grid;
-        place-items: center;
-        padding: 2rem;
-      }
+    main {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+    }
 
-      .container {
-        display: grid;
-        place-content: center;
-        position: relative;
-        overflow: hidden;
-        border-radius: 1rem;
-        width: 100%;
-        max-width: 800px;
-        aspect-ratio: 2/3;
-        height: 600px; /* Explicit height */
-        background-color: #000;
-        box-sizing: border-box;
-      }
+    .container {
+      /* 1) Initialize the CSS var so you see half/half on load */
+      --position: 50%;
+      
+      position: relative;
+      overflow: hidden;
+      border-radius: 1rem;
+      width: 100%;
+      max-width: 800px;
+      aspect-ratio: 2/3;
+      height: 600px;
+      background-color: #000;
+    }
 
-      .image-container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-      }
+    .image-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
 
-      .slider-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-      }
+    .slider-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
 
-      .image-before {
-        position: absolute;
-        inset: 0;
-        width: var(--position);
-        transition: width 0.2s ease;
-        z-index: 2;
-      }
+    .image-before {
+      position: absolute;
+      inset: 0;
+      /* 2) Drive width from --position */
+      width: var(--position);
+      transition: width 0.2s ease;
+      z-index: 2;
+    }
 
-      .image-after {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        z-index: 1;
-      }
+    .image-after {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      z-index: 1;
+    }
 
-      .slider {
-        position: absolute;
-        top: 0;
-        left: 50%; /* Center the slider horizontally */
-        transform: translateX(-50%); /* Adjust for the width of the slider */
-        cursor: pointer;
-        opacity: 0;
-        width: 100%;
-        height: 100%;
-      }
+    .slider {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+      opacity: 0;           /* hide native track/thumb */
+      width: 100%;
+      height: 100%;
+    }
 
-      .slider-line {
-        position: absolute;
-        inset: 0;
-        width: 0.2rem;
-        height: 100%;
-        background-color: #fff;
-        left: 50%; /* Start the slider line in the center */
-        transform: translateX(-50%);
-        pointer-events: none;
-      }
+    .slider-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      /* 2) Move line with --position */
+      left: var(--position);
+      transform: translateX(-50%);
+      width: 0.2rem;
+      background-color: #fff;
+      pointer-events: none;
+      /* 3) Above .image-before */
+      z-index: 3;
+    }
 
-      .slider-button {
-        position: absolute;
-        background-color: #fff;
-        color: black;
-        padding: 0.5rem;
-        border-radius: 100vw;
-        display: grid;
-        place-items: center;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-      }
+    .slider-button {
+      position: absolute;
+      top: 50%;
+      /* 2) Move button with --position */
+      left: var(--position);
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 0.5rem;
+      border-radius: 100vw;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+      box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+      /* 3) Above .image-before */
+      z-index: 3;
+    }
 
-      footer {
-        text-align: center;
-        padding: 1rem;
-        background-color: #222;
-        color: white;
-      }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #222;
+      color: white;
+    }
 
-      footer a {
-        color: white;
-        text-decoration: none;
-      }
+    footer a {
+      color: white;
+    }
 
-    </style>
+  </style>
 </head>
 <body>
 
@@ -132,24 +137,26 @@
   <main>
     <div class="container">
       <div class="image-container">
-        <!-- Use the full URL for the images -->
-        <img 
+        <img
           class="image-before slider-image"
           src="https://phoenixphotography.github.io/Before-After/images/retouching1_before.jpg"
-          alt="Before image"
+          alt="Before"
         />
-        <img  
+        <img
           class="image-after slider-image"
           src="https://phoenixphotography.github.io/Before-After/images/retouching1_after.jpg"
-          alt="After image"
+          alt="After"
         />
       </div>
-      <input type="range" min="0" max="100"
-      value="50" class="slider" aria-label="percentage of before photo shown"
+
+      <input
+        type="range" min="0" max="100" value="50"
+        class="slider" aria-label="percentage of before photo shown"
       />
+
       <div class="slider-line"></div>
       <div class="slider-button" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000" viewBox="0 0 256 256">
           <path d="M136,40V216a8,8,0,0,1-16,0V40a8,8,0,0,1,16,0ZM96,120H35.31l18.35-18.34A8,8,0,0,0,42.34,90.34l-32,32a8,8,0,0,0,0,11.32l32,32a8,8,0,0,0,11.32-11.32L35.31,136H96a8,8,0,0,0,0-16Zm149.66,2.34-32-32a8,8,0,0,0-11.32,11.32L220.69,120H160a8,8,0,0,0,0,16h60.69l-18.35,18.34a8,8,0,0,0,11.32,11.32l32-32A8,8,0,0,0,245.66,122.34Z"></path>
         </svg>
       </div>
@@ -157,14 +164,22 @@
   </main>
 
   <footer>
-    <p>Contact me at <a href="mailto:phoenixfusion2025@gmail.com" style="color: white;">phoenixfusion2025@gmail.com</a></p>
+    <p>
+      Contact me at
+      <a href="mailto:phoenixfusion2025@gmail.com">phoenixfusion2025@gmail.com</a>
+    </p>
   </footer>
 
   <script>
+    const slider = document.querySelector('.slider');
     const container = document.querySelector('.container');
-    document.querySelector('.slider').addEventListener('input', (e) => {
-      container.style.setProperty('--position', `${e.target.value}%`);
-    })
+
+    slider.addEventListener('input', e => {
+      container.style.setProperty('--position', e.target.value + '%');
+    });
+    
+    // optional: initialize on load
+    container.style.setProperty('--position', slider.value + '%');
   </script>
 </body>
 </html>
