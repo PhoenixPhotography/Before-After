@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Before/After Slider</title>
+  <title>Retouching Portfolio</title>
   <style>
     /* reset */
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box }
@@ -18,7 +18,15 @@
       text-align:center; padding:1rem; background:#222; color:#fff;
     }
     main {
-      flex:1; display:grid; place-items:center; padding:2rem;
+      flex:1;
+      display:grid;
+      gap:2rem;
+      padding:2rem;
+      /* stack on mobile, grid two-column on wider screens */
+      grid-template-columns: 1fr;
+    }
+    @media(min-width:800px){
+      main { grid-template-columns: 1fr 1fr; }
     }
 
     /* slider container */
@@ -26,9 +34,8 @@
       position: relative;
       overflow: hidden;
       border-radius:1rem;
-      width:100%; max-width:800px;
+      width:100%;
       aspect-ratio:2/3;
-      height:600px;
       background:#000;
     }
 
@@ -42,12 +49,13 @@
     }
     .image-after { z-index:1 }
     .image-before {
+      /* clip off right 50% at start */
       clip-path: inset(0 50% 0 0);
       transition: clip-path 0.2s ease;
       z-index:2;
     }
 
-    /* full-cover, invisible range input */
+    /* invisible full-cover range input */
     .slider {
       position:absolute;
       top:0; left:0;
@@ -58,44 +66,31 @@
       touch-action: none;
       -webkit-appearance:none;
       appearance:none;
-      outline:none; /* no focus ring */
+      outline:none;
     }
-    /* track */
     .slider::-webkit-slider-runnable-track {
       -webkit-appearance:none;
-      appearance:none;
-      width:100%; height:100%;
-      background:transparent;
-      border: none;
-      box-shadow: none;
+      width:100%; height:100%; background:transparent;
+      border:none; box-shadow:none;
     }
     .slider::-moz-range-track {
-      width:100%; height:100%;
-      background:transparent;
-      border: none;
-      box-shadow: none;
+      width:100%; height:100%; background:transparent;
+      border:none; box-shadow:none;
     }
-    /* thumb */
     .slider::-webkit-slider-thumb {
       -webkit-appearance:none;
-      appearance:none;
-      width: 40px;
-      height: 100%;
-      background: transparent;
-      border: none;
-      box-shadow: none;
+      width:40px; height:100%;
+      background:transparent;
+      border:none; box-shadow:none;
     }
     .slider::-moz-range-thumb {
-      width: 40px;
-      height: 100%;
-      background: transparent;
-      border: none;
-      box-shadow: none;
+      width:40px; height:100%;
+      background:transparent;
+      border:none; box-shadow:none;
     }
-    /* Firefox filled portion (just in case) */
     .slider::-moz-range-progress {
-      background: transparent !important;
-      box-shadow: none !important;
+      background:transparent !important;
+      box-shadow:none !important;
     }
 
     /* dividing line & custom handle */
@@ -127,23 +122,102 @@
   <header><h1>Retouching Portfolio</h1></header>
 
   <main>
+    <!-- repeat this .container block for each pair -->
     <div class="container">
-      <img
-        class="image-after"
-        src="https://phoenixphotography.github.io/Before-After/images/retouching1_after.jpg"
-        alt="After"
-      />
-      <img
-        class="image-before"
-        src="https://phoenixphotography.github.io/Before-After/images/retouching1_before.jpg"
-        alt="Before"
-      />
+      <img class="image-after"
+           src="https://phoenixphotography.github.io/Before-After/images/retouching1_after.jpg"
+           alt="After 1"/>
+      <img class="image-before"
+           src="https://phoenixphotography.github.io/Before-After/images/retouching1_before.jpg"
+           alt="Before 1"/>
 
-      <input
-        type="range" min="0" max="100" value="50"
-        class="slider" aria-label="Before/after slider"
-      />
+      <input type="range" min="0" max="100" value="50"
+             class="slider" aria-label="Slider 1"/>
 
+      <div class="slider-line"></div>
+      <div class="slider-button" aria-hidden="true">
+        <!-- SVG handle -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000" viewBox="0 0 256 256">
+          <path d="M136,40V216a8,8,0,0,1-16,0V40a8,8,0,0,1,16,0ZM96,120H35.31l18.35-18.34A8,8,0,0,0,42.34,90.34l-32,32a8,8,0,0,0,0,11.32l32,32a8,8,0,0,0,11.32-11.32L35.31,136H96a8,8,0,0,0,0-16Zm149.66,2.34-32-32a8,8,0,0,0-11.32,11.32L220.69,120H160a8,8,0,0,0,0,16h60.69l-18.35,18.34a8,8,0,0,0,11.32,11.32l32-32A8,8,0,0,0,245.66,122.34Z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <div class="container">
+      <img class="image-after"
+           src="https://phoenixphotography.github.io/Before-After/images/retouching2_after.jpg"
+           alt="After 2"/>
+      <img class="image-before"
+           src="https://phoenixphotography.github.io/Before-After/images/retouching2_before.jpg"
+           alt="Before 2"/>
+      <input type="range" min="0" max="100" value="50" class="slider" aria-label="Slider 2"/>
+      <div class="slider-line"></div>
+      <div class="slider-button" aria-hidden="true">
+        <!-- same SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000" viewBox="0 0 256 256">
+          <path d="M136,40V216a8,8,0,0,1-16,0V40a8,8,0,0,1,16,0ZM96,120H35.31l18.35-18.34A8,8,0,0,0,42.34,90.34l-32,32a8,8,0,0,0,0,11.32l32,32a8,8,0,0,0,11.32-11.32L35.31,136H96a8,8,0,0,0,0-16Zm149.66,2.34-32-32a8,8,0,0,0-11.32,11.32L220.69,120H160a8,8,0,0,0,0,16h60.69l-18.35,18.34a8,8,0,0,0,11.32,11.32l32-32A8,8,0,0,0,245.66,122.34Z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- copy/paste two more for 3 & 4 -->
+    <div class="container">
+      <img class="image-after"
+           src="https://phoenixphotography.github.io/Before-After/images/retouching3_after.jpg"
+           alt="After 3"/>
+      <img class="image-before"
+           src="https://phoenixphotography.github.io/Before-After/images/retouching3_before.jpg"
+           alt="Before 3"/>
+      <input type="range" min="0" max="100" value="50" class="slider" aria-label="Slider 3"/>
+      <div class="slider-line"></div>
+      <div class="slider-button" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000" viewBox="0 0 256 256">
+          <path d="M136,40V216a8,8,0,0,1-16,0V40a8,8,0,0,1,16,0ZM96,120H35.31l18.35-18.34A8,8,0,0,0,42.34,90.34l-32,32a8,8,0,0,0,0,11.32l32,32a8,8,0,0,0,11.32-11.32L35.31,136H96a8,8,0,0,0,0-16Zm149.66,2.34-32-32a8,8,0,0,0-11.32,11.32L220.69,120H160a8,8,0,0,0,0,16h60.69l-18.35,18.34a8,8,0,0,0,11.32,11.32l32-32A8,8,0,0,0,245.66,122.34Z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <div class="container">
+      <img class="image-after"
+           src="https://phoenixphotography.github.io/Before-After/images/retouching4_after.jpg"
+           alt="After 4"/>
+      <img class="image-before"
+           src="https://phoenixphotography.github.io/Before-After/images/retouching4_before.jpg"
+           alt="Before 4"/>
+      <input type="range" min="0" max="100" value="50" class="slider" aria-label="Slider 4"/>
+      <div class="slider-line"></div>
+      <div class="slider-button" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000" viewBox="0 0 256 256">
+          <path d="M136,40V216a8,8,0,0,1-16,0V40a8,8,0,0,1,16,0ZM96,120H35.31l18.35-18.34A8,8,0,0,0,42.34,90.34l-32,32a8,8,0,0,0,0,11.32l32,32a8,8,0,0,0,11.32-11.32L35.31,136H96a8,8,0,0,0,0-16Zm149.66,2.34-32-32a8,8,0,0,0-11.32,11.32L220.69,120H160a8,8,0,0,0,0,16h60.69l-18.35,18.34a8,8,0,0,0,11.32,11.32l32-32A8,8,0,0,0,245.66,122.34Z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- and 5 & 6 -->
+    <div class="container">
+      <img class="image-after"
+           src="https://phoenixphotography.github.io/Before-After/images/retouching5_after.jpg"
+           alt="After 5"/>
+      <img class="image-before"
+           src="https://phoenixphotography.github.io/Before-After/images/retouching5_before.jpg"
+           alt="Before 5"/>
+      <input type="range" min="0" max="100" value="50" class="slider" aria-label="Slider 5"/>
+      <div class="slider-line"></div>
+      <div class="slider-button" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000" viewBox="0 0 256 256">
+          <path d="M136,40V216a8,8,0,0,1-16,0V40a8,8,0,0,1,16,0ZM96,120H35.31l18.35-18.34A8,8,0,0,0,42.34,90.34l-32,32a8,8,0,0,0,0,11.32l32,32a8,8,0,0,0,11.32-11.32L35.31,136H96a8,8,0,0,0,0-16Zm149.66,2.34-32-32a8,8,0,0,0-11.32,11.32L220.69,120H160a8,8,0,0,0,0,16h60.69l-18.35,18.34a8,8,0,0,0,11.32,11.32l32-32A8,8,0,0,0,245.66,122.34Z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <div class="container">
+      <img class="image-after"
+           src="https://phoenixphotography.github.io/Before-After/images/retouching6_after.jpg"
+           alt="After 6"/>
+      <img class="image-before"
+           src="https://phoenixphotography.github.io/Before-After/images/retouching6_before.jpg"
+           alt="Before 6"/>
+      <input type="range" min="0" max="100" value="50" class="slider" aria-label="Slider 6"/>
       <div class="slider-line"></div>
       <div class="slider-button" aria-hidden="true">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000" viewBox="0 0 256 256">
@@ -164,19 +238,21 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const range  = document.querySelector('.slider');
-      const before = document.querySelector('.image-before');
-      const line   = document.querySelector('.slider-line');
-      const handle = document.querySelector('.slider-button');
+      document.querySelectorAll('.container').forEach(container => {
+        const range  = container.querySelector('.slider');
+        const before = container.querySelector('.image-before');
+        const line   = container.querySelector('.slider-line');
+        const handle = container.querySelector('.slider-button');
 
-      function update(pos) {
-        before.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
-        line.style.left       = `${pos}%`;
-        handle.style.left     = `${pos}%`;
-      }
+        function update(pos) {
+          before.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
+          line.style.left       = `${pos}%`;
+          handle.style.left     = `${pos}%`;
+        }
 
-      range.addEventListener('input', e => update(e.target.value));
-      update(range.value);
+        range.addEventListener('input', e => update(e.target.value));
+        update(range.value);
+      });
     });
   </script>
 </body>
